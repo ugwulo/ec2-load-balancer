@@ -5,8 +5,7 @@ variable "aws_region" {
 }
 
 variable "ugwulo_vpc_cidr" {
-  type    = string
-  default = "10.0.0.0/16"
+  type = string
 }
 
 variable "igw_cidr" {
@@ -28,39 +27,53 @@ variable "ingress_rules" {
     cidr        = list(string)
   }))
 
-  default = {
-    "80" = {
-      description = "HTTP traffic"
-      port        = 80
-      protocol    = "tcp"
-      cidr        = ["0.0.0.0/0"]
-    }
-
-    "443" = {
-      description = "HTTPS traffic"
-      port        = 443
-      protocol    = "tcp"
-      cidr        = ["0.0.0.0/0"]
-    }
-
-    "22" = {
-      description = "SSH traffic"
-      port        = 22
-      protocol    = "tcp"
-      cidr        = ["0.0.0.0/0"]
-    }
-  }
-
 }
 
 variable "ami_id" {
   description = "ami id"
   type        = string
-  default     = "ami-00874d747dde814fa"
 }
 
 variable "instance_type" {
   description = "Instance type to create an instance"
   type        = string
   default     = "t2.micro"
+}
+
+
+variable "domain_name" {
+  type = string
+}
+variable "sub_domain_name" {
+  type = string
+}
+
+# variable "Application_LB_DNS" {
+#   default = aws_lb.lb.dns_name
+# }
+variable "zone_id" {
+  type        = string
+  description = "route53 hosted zone ID"
+}
+
+variable "health_check" {
+  type = map(string)
+  default = {
+    "interval"            = "300"
+    "path"                = "/"
+    "timeout"             = "60"
+    "matcher"             = "200"
+    "healthy_threshold"   = "5"
+    "unhealthy_threshold" = "5"
+  }
+}
+
+variable "ssh_key" {
+  description = "SSH Key"
+  type        = string
+}
+
+variable "ssh_key_name" {
+  description = "SSH private Key name"
+  type        = string
 }
